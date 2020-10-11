@@ -1,7 +1,7 @@
 import React from 'react';
 
 function BarGroup(props) {
-  let barColour = '#4d75bb'
+  let barColour = '#007bff'
   let heightScale = d => d * 25
 
   let height = heightScale(props.d.count)
@@ -22,12 +22,12 @@ function BarChart(props) {
 
   let barGroups = props.data.map((d, i) =>
     <g transform={`translate(${i * (barWidth + barPadding)}, 0)`}>
-      <BarGroup d={d} barWidth={barWidth} barPadding={barPadding} />
+      <BarGroup key={i} d={d} barWidth={barWidth} barPadding={barPadding} />
     </g>
   )
 
   return (
-    <svg width="800" height="200" >
+    <svg width="800" height="500" >
       <g className="container">
         <g className="chart" transform="translate(100,60)">
           {barGroups}

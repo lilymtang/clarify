@@ -1,25 +1,10 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import {
-  makeStyles
-} from "@material-ui/core/styles";
-
-
-
-const useStyles = makeStyles({
-  button: {
-    textTransform: "none"
-  }
-});
-
-
+import Button from 'react-bootstrap/Button';
 
 const SentimentButton = (props) => {
-  const classes = useStyles();
-
   return (
     <>
-      <Button name={props.text} onClick={props.onClick} variant='contained' className={classes.button} color='primary' style={{ margin: 8 }}>
+      <Button variant='primary' name={props.text} onClick={props.onClick} style={{ margin: 8 }}>
         {props.text}
       </Button>
     </>

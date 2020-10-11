@@ -12,7 +12,7 @@ function Poll(props) {
   const onClick = async (e) => {
     // Get current value
     let currData = data.filter(function (option) {
-      return option.name == e.target.name
+      return option.name === e.target.name
     })[0].count;
 
     // update db with new value
