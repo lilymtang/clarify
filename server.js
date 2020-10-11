@@ -9,10 +9,9 @@ app.listen(8080);
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./src/serviceAccountKey.json');
+
 //initialize admin SDK using serciceAcountKey
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 const db = admin.firestore();
 
 // Pushes messages to database
