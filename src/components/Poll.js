@@ -24,13 +24,16 @@ function Poll(props) {
       });
   }
 
+  // TODO: customize button order
   // Update data when db collection is modified 
   useEffect(() => {
     if (!db.collection('poll')) return;
 
     const unsubscribe = db.collection('poll').onSnapshot(function (snapshot) {
-      let snapshots = snapshot.docs.map(doc => doc.data());
-      let result = pollOptions.map((option, index) => ({ ...option, count: snapshots[index]['count'] }));
+      var result = [];
+      snapshot.forEach(function (doc) {
+        result.push({ name: doc.id, count: doc.data().count });
+      });
       setData(result);
     });
     return unsubscribe;
@@ -38,10 +41,10 @@ function Poll(props) {
 
   // Buttons
   const pollOptions = [
-    { name: 'sentiment1' },
-    { name: 'sentiment2' },
-    { name: 'sentiment3' },
-    { name: 'sentiment4' }
+    { name: '😳' },
+    { name: '😕' },
+    { name: '🙂' },
+    { name: '😁' }
   ]
   const buttons = pollOptions.map((option) => <SentimentButton text={option.name} onClick={onClick} />)
 
