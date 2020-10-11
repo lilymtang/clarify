@@ -8,13 +8,14 @@ function Poll(props) {
   const [data, setData] = useState([]);
   const db = firebase.firestore();
 
+  // TODO: e.target.name only works when clicking on upper left hand corner of MUI button
   const onClick = async (e) => {
     // Get current value
     let currData = data.filter(function (option) {
       return option.name == e.target.name
     })[0].count;
 
-    // Set new value to current + 1
+    // update db with new value
     db.collection('poll').doc(e.target.name).set({
       count: currData + 1
     })
@@ -23,35 +24,17 @@ function Poll(props) {
       });
   }
 
-  useEffect(() => {
-    async function getCollection(collection) {
-      const snapshot = await db.collection(collection).get();
-      let data = snapshot.docs.map(doc => doc.data());
-      let result = pollOptions.map((option, index) => ({ ...option, count: data[index]['count'] }));
-      console.log('getCollection');
-      setData(result);
-    }
-    getCollection('poll');
-  }, []);
-
-
+  // Update data when db collection is modified 
   useEffect(() => {
     if (!db.collection('poll')) return;
 
     const unsubscribe = db.collection('poll').onSnapshot(function (snapshot) {
-      // let i = 0;
-      // querySnapshot.forEach(function (doc) {
-      //   pollOptions[i]['count'] = doc.data().count;
-      //   i++;
-      // });
-
-      let data = snapshot.docs.map(doc => doc.data());
-      let result = pollOptions.map((option, index) => ({ ...option, count: data[index]['count'] }));
-
-      console.log('snapshot', result);
+      let snapshots = snapshot.docs.map(doc => doc.data());
+      let result = pollOptions.map((option, index) => ({ ...option, count: snapshots[index]['count'] }));
+      setData(result);
     });
-    return () => unsubscribe();
-  }, [db.collection('poll')]);
+    return unsubscribe;
+  }, []);
 
   // Buttons
   const pollOptions = [
